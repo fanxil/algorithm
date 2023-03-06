@@ -620,7 +620,7 @@ class Solution {
 
 
 
-### 8、力扣[876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/) 双指针：快慢指针 判断奇偶（未手写）
+### 8、力扣[876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/) 双指针：快慢指针 判断奇偶
 
 给你单链表的头结点 `head` ，请你找出并返回链表的中间结点。
 
@@ -632,6 +632,25 @@ class Solution {
 输入：head = [1,2,3,4,5]
 输出：[3,4,5]
 解释：链表只有一个中间结点，值为 3 。
+```
+
+```
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        if(head == null){
+            return head;
+        }
+
+        ListNode slowNode = head;
+        ListNode fastNode = head;
+        while(fastNode != null && fastNode.next != null){
+            slowNode = slowNode.next;
+            fastNode = fastNode.next.next;
+        }
+
+        return slowNode;
+    }
+}
 ```
 
 
@@ -696,6 +715,28 @@ public class Solution {
      */
     public ListNode FindKthToTail (ListNode pHead, int k) {
         // write code here
+        if(pHead == null){
+            return pHead;
+        }
+        
+        ListNode temp = pHead;
+        int n = 0;
+        while(temp != null){
+            temp = temp.next;
+            n++;
+        }
+        
+        if(k == 0 || n < k){
+            return null;
+        }
+        int dest = n - k + 1;
+        temp = pHead;
+        while(dest > 1){
+            temp = temp.next;
+            dest--;
+        }
+
+        return temp;
     }
 }
 ```
@@ -737,7 +778,73 @@ myQueue.pop(); // return 1, queue is [2]
 myQueue.empty(); // return false
 ```
 
+```
+class MyQueue {
 
+    Stack<Integer> inStack;
+    Stack<Integer> outStack;
+
+    public MyQueue() {
+        inStack = new Stack<>();
+        outStack = new Stack<>();
+    }
+
+    public void push(int x) {
+        inStack.push(x);
+    }
+
+    public int pop() {
+        // 如果b栈为空，则将a栈全部弹出并压入b栈中，然后b.pop()
+        if (outStack.isEmpty()) {
+            while (!inStack.isEmpty()) {
+                outStack.push(inStack.pop());
+            }
+        }
+        return outStack.pop();
+    }
+
+    public int peek() {
+        // 如果b栈为空，则将a栈全部弹出并压入b栈中，然后b.pop()
+        if (outStack.isEmpty()) {
+            while (!inStack.isEmpty()) {
+                outStack.push(inStack.pop());
+            }
+        }
+        return outStack.peek();
+    }
+
+    public boolean empty() {
+        return inStack.isEmpty() && outStack.isEmpty();
+    }
+}
+```
+
+```
+class MyQueue {
+
+    Queue<Integer> queue;
+
+    public MyQueue() {
+        queue = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        queue.add(x);
+    }
+    
+    public int pop() {
+        return queue.poll();
+    }
+    
+    public int peek() {
+        return queue.peek();
+    }
+    
+    public boolean empty() {
+        return queue.isEmpty();
+    }
+}
+```
 
 
 
@@ -755,6 +862,8 @@ myQueue.empty(); // return false
 输入：s = "3[a]2[bc]"
 输出："aaabcbc"
 ```
+
+
 
 ### 3、
 
