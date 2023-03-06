@@ -12,7 +12,7 @@
 
 递归常改造成迭代循环的解法
 
-### 1、力扣70 ：爬楼梯
+### 1、力扣[70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs/) 
 
 ​	假设你正在爬楼梯。需要 `n` 阶你才能到达楼顶。
 
@@ -71,7 +71,7 @@ class Solution {
 
 ## 数组
 
-### 1、力扣1 两数之和（空间换时间）
+### 1、力扣[1. 两数之和](https://leetcode.cn/problems/two-sum/) （空间换时间）
 
 ```
 import java.util.*;
@@ -92,7 +92,7 @@ class Solution {
 }
 ```
 
-### 2、力扣88 合并两个有序数组（双指针）
+### 2、力扣[88. 合并两个有序数组](https://leetcode.cn/problems/merge-sorted-array/) （双指针）
 
 给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。
 
@@ -170,7 +170,7 @@ class Solution {
     }
 ```
 
-### 3、力扣283 移动零（双指针）
+### 3、力扣[283. 移动零](https://leetcode.cn/problems/move-zeroes/) （双指针）
 
 给定一个数组 `nums`，编写一个函数将所有 `0` 移动到数组的末尾，同时保持非零元素的相对顺序。
 
@@ -560,7 +560,7 @@ class Solution {
 }
 ```
 
-### 7、力扣[234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/) 双指针：快慢指针 利用反转链表（未手写）
+### 7、力扣[234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/) 双指针：快慢指针 利用反转链表
 
 给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
 
@@ -569,6 +569,53 @@ class Solution {
 ```
 输入：head = [1,2,2,1]
 输出：true
+```
+
+```
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head == null){
+            return false;
+        }
+
+        ListNode slowNode = head;
+        ListNode fastNode = head;
+        while(fastNode != null && fastNode.next != null){
+            slowNode = slowNode.next;
+            fastNode = fastNode.next.next;
+        }
+        slowNode = reverse(slowNode);
+        fastNode = head;
+
+        while(slowNode != null){
+            if(slowNode.val != fastNode.val){
+                return false;
+            }
+            slowNode = slowNode.next;
+            fastNode = fastNode.next;
+        }
+
+        return true;
+    }
+
+    //反转
+    public ListNode reverse(ListNode head){
+        if(head == null){
+            return head;
+        }
+        ListNode preNode = null;
+
+        ListNode temp = head;
+        while(temp != null){
+            ListNode next = temp.next;
+            temp.next = preNode;
+            preNode = temp;
+            temp = next;
+        }
+        return preNode;
+
+    }
+}
 ```
 
 
