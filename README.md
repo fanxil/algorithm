@@ -885,7 +885,7 @@ class MyQueue {
 
 二叉树：完全二叉树：左下标=2k+1 右下标：2(k+1) 最大非叶子节点下标：（n/2）-1
 
-### 1、力扣[94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/) 
+### 1、力扣[94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/)  递归 Morris致敬递归
 
 给定一个二叉树的根节点 `root` ，返回 *它的 **中序** 遍历* 。
 
@@ -896,15 +896,138 @@ class MyQueue {
 输出：[1,3,2]
 ```
 
-### 2、力扣[144. 二叉树的前序遍历](https://leetcode.cn/problems/binary-tree-preorder-traversal/) 
+```
+	public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+        //递归
+        // process(root , list);
 
-给你二叉树的根节点 `root` ，返回它节点值的 **前序** 遍历。
+        //morris递归
+        TreeNode curr = root;
+        TreeNode morris = root;
+        while(curr != null){
+            morris = curr.left;
+            if(morris != null){//有左树不打印
+                while(morris.right != null && morris.right != curr){
+                    morris = morris.right;
+                }
+                if(morris.right == null){
+                    morris.right = curr;
+                    curr = curr.left;
+                    continue;
+                }else{//第二次到达 打印
+                    list.add(curr.val);
+                    morris.right = null;
+                }
 
-![img](https://assets.leetcode.com/uploads/2020/09/15/inorder_1.jpg)
+            }else{//无左树直接打印
+                list.add(curr.val);
+            }
+            curr = curr.right;
+        }
+        return list;
+    }
+```
+
+```
+//递归解法
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+
+        process(root , list);
+        return list;
+    }
+
+
+    public void process(TreeNode tree , List<Integer> list){
+        if(tree == null){
+            return;
+        }
+        list.add(tree.val);
+        process(tree.left , list);
+        process(tree.right , list);
+    }
+}
+```
+
+
+
+### 2、力扣[144. 二叉树的前序遍历](https://leetcode.cn/problems/binary-tree-preorder-traversal/)  递归 Morris致敬递归
+
+
 
 ```
 输入：root = [1,null,2,3]
 输出：[1,2,3]
+```
+
+```
+//递归解法
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+
+        process(root , list);
+        return list;
+    }
+
+
+    public void process(TreeNode tree , List<Integer> list){
+        if(tree == null){
+            return;
+        }
+        process(tree.left , list);
+        list.add(tree.val);
+        process(tree.right , list);
+    }
+}
+```
+
+```
+public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+        //递归
+        // process(root , list);
+
+        //morris递归
+        TreeNode curr = root;
+        TreeNode morris = root;
+        while(curr != null){
+            morris = curr.left;
+            if(morris != null){//有左树不打印
+                while(morris.right != null && morris.right != curr){
+                    morris = morris.right;
+                }
+                if(morris.right == null){
+                    list.add(curr.val);
+                    morris.right = curr;
+                    curr = curr.left;
+                    continue;
+                }else{//第二次到达 打印
+                    
+                    morris.right = null;
+                }
+
+            }else{//无左树直接打印
+                list.add(curr.val);
+            }
+            curr = curr.right;
+        }
+        return list;
+    }
 ```
 
 
@@ -920,7 +1043,29 @@ class MyQueue {
 输出：[3,2,1]
 ```
 
+```
+//递归解法
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
 
+        process(root , list);
+        return list;
+    }
+
+    public void process(TreeNode tree , List<Integer> list){
+        if(tree == null){
+            return;
+        }
+        process(tree.left , list);
+        process(tree.right , list);
+        list.add(tree.val);
+    }
+}
+```
 
 
 
@@ -996,7 +1141,9 @@ class MyQueue {
 
 
 
-### 8、
+### 8、搜索二叉树：中序遍历递增：代表搜索二叉树 Morris遍历中序递增
+
+
 
 ### 9、
 
@@ -1032,13 +1179,55 @@ class MyQueue {
 
 ## 六：第二期：基础进阶
 
-### 1、
+### 1、十进制、二进制
 
-### 2、
+10:0-9种标识来标识
 
-### 3、
+二进制：计算机只有0或1来标识
 
-### 4、
+谈到二进制：会聊到原码、反码(负数)、补码（负数反码+1）
+
+一个字节：8位 int：4个字节：32位 long：8个字节：64位
+
+
+
+计算机最小单位是：8 * 8字节 = 64字节 涉及到cpu的三级缓存 规范
+
+### 2、位运算 （取模、判断奇偶、数字翻倍或减半、扩容 、 固定状态）
+
+4 : 100
+
+6:  110
+
+按位与 &  4 & 6 : 100
+
+按位或 |  4 | 6 : 110
+
+按位非 ~  ~4  : 111...11011
+
+按位异或 ^ 4 ^ 6 :  010
+
+有符号右移 >>  4 >> 1= 4 右移一位 = 统一往右移一位，高位补0=  10
+
+​						-4 ：补码 11111111000
+
+​						 -4>> 1 =-4 右移一位= 统一往右移一位，高位补1 = 
+
+有符号左移 <<
+
+无符号右移 >>>
+
+
+
+优势：节约空间、提高效率
+
+缺点：不直观
+
+### 3、动态规划
+
+动态规划的思想是先解决子问题，在逐步解决大问题，即 把大问题拆分成多个子问题
+
+### 4、贪心算法
 
 ### 5、
 
